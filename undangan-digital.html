@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wedding of Lana & Elma</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind Custom Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sage: {
+                            50: '#f4f7f4',
+                            100: '#e3eae3',
+                            500: '#879a87',
+                            600: '#6c7f6c',
+                            700: '#566656',
+                            800: '#445144',
+                        },
+                        rosegold: {
+                            100: '#fbf5f2',
+                            300: '#e6c7be',
+                            500: '#c59b8d',
+                            600: '#ab7d6e',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        script: ['"Great Vibes"', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .mobile-container::-webkit-scrollbar {
+            width: 5px;
+        }
+        .mobile-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .mobile-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .bg-pattern {
+            background-image: radial-gradient(#879a87 0.75px, transparent 0.75px), radial-gradient(#c59b8d 0.75px, #fdfbf7 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-stone-900 text-stone-800 font-sans antialiased flex flex-col items-center justify-center min-h-screen m-0 overflow-x-hidden">
+
+    <!-- BACKGROUND DESKTOP AMBIENT -->
+    <div class="fixed inset-0 bg-pattern opacity-40 pointer-events-none hidden md:block"></div>
+
+    <!-- ================= VIEW UTAMA POV TAMU ================= -->
+    <div id="viewInvitation" class="w-full md:w-[420px] h-screen md:h-[90vh] md:max-h-[880px] md:rounded-[40px] md:shadow-2xl md:border-8 md:border-stone-800 bg-[#fdfbf7] relative overflow-hidden flex flex-col">
+
+        <!-- AUDIO BACKGROUND (File Lokal sesuai request: undangan_digital/risk-it-all.mp3) -->
+        <audio id="bgMusic" loop>
+            <source src="hitamputih.mp3" type="audio/mpeg">
+        </audio>
+
+        <!-- FLOATING MUSIC BUTTON -->
+        <button id="musicToggle" onclick="toggleMusic()" class="absolute top-4 right-4 z-50 bg-white/80 backdrop-blur-md p-2.5 rounded-full shadow-lg border border-sage-200 text-sage-700 hover:bg-sage-100 transition hidden flex items-center justify-center w-10 h-10">
+            <i id="musicIcon" class="fa-solid fa-compact-disc text-base animate-spin"></i>
+        </button>
+
+        <!-- FULLSCREEN ENVELOPE COVER LAYER -->
+        <div id="envelopeCover" class="absolute inset-0 z-40 bg-gradient-to-b from-sage-700 via-sage-800 to-stone-900 flex flex-col items-center justify-between p-6 text-center text-white transition-transform duration-700 ease-in-out">
+            <div class="absolute inset-0 bg-pattern opacity-10 pointer-events-none"></div>
+            
+            <div class="my-auto z-10 space-y-6 pt-6">
+                <div class="w-20 h-20 mx-auto bg-white/10 rounded-full flex items-center justify-center border border-white/20 backdrop-blur-md animate-float">
+                    <i class="fa-solid fa-rings-wedding text-3xl text-rosegold-300"></i>
+                </div>
+                
+                <span class="inline-block uppercase tracking-[0.3em] text-xs text-sage-200 font-medium">
+                    The Wedding Of
+                </span>
+                
+                <h1 class="font-script text-6xl text-white drop-shadow-md">
+                    Lana & Elma
+                </h1>
+
+                <div class="bg-white/10 backdrop-blur-md p-5 rounded-3xl shadow-xl border border-white/20 max-w-[280px] mx-auto">
+                    <p class="text-[11px] text-sage-200 uppercase tracking-widest mb-1">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+                    <h3 id="guestNameCover" class="text-base font-bold text-white mb-1">Tamu Undangan</h3>
+                    <p class="text-[10px] text-stone-300 italic">Mohon maaf apabila ada kesalahan penulisan nama/gelar</p>
+                </div>
+
+                <div class="pt-2">
+                    <button onclick="openEnvelope()" class="group relative inline-flex items-center gap-3 px-8 py-3.5 bg-white text-sage-800 font-bold text-xs uppercase tracking-widest rounded-full shadow-2xl hover:bg-sage-100 active:scale-95 transition-all duration-300">
+                        <i class="fa-solid fa-envelope-open-text text-base animate-bounce text-sage-700"></i>
+                        <span>Buka Undangan</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="pb-4 text-sage-300 text-[11px] opacity-70">
+                <span>Ketuk tombol untuk membuka undangan</span>
+            </div>
+        </div>
+
+        <!-- MAIN SCROLLABLE CONTAINER -->
+        <div id="scrollContainer" class="mobile-container flex-1 overflow-y-auto relative scroll-smooth">
+
+            <!-- SECTION 1: HEADER HERO -->
+            <section class="min-h-full w-full flex flex-col items-center justify-between p-6 text-center relative bg-gradient-to-b from-sage-100/60 via-[#fdfbf7] to-rosegold-100/40">
+                <div class="my-auto z-10 space-y-6 pt-10">
+                    <span class="inline-block uppercase tracking-[0.25em] text-xs text-sage-700 font-medium bg-sage-100 px-4 py-1.5 rounded-full border border-sage-200">
+                        The Wedding Of
+                    </span>
+                    
+                    <h1 class="font-script text-7xl text-sage-800">
+                        Lana & Elma
+                    </h1>
+                </div>
+
+                <div class="pb-6 text-stone-400 text-xs flex flex-col items-center gap-1 opacity-70">
+                    <span>Swipe Up</span>
+                    <i class="fa-solid fa-chevron-down animate-bounce text-[10px]"></i>
+                </div>
+            </section>
+
+            <!-- SECTION 2: INTRO & LIVE COUNTDOWN -->
+            <section class="min-h-full w-full flex flex-col items-center justify-center p-6 text-center relative bg-[#fdfbf7] py-16">
+                <div class="absolute inset-0 bg-pattern opacity-20 pointer-events-none"></div>
+                
+                <div class="z-10 space-y-6 w-full max-w-sm">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-sage-100 flex items-center justify-center border border-sage-200 text-sage-700 shadow-inner">
+                        <i class="fa-solid fa-heart text-xl"></i>
+                    </div>
+
+                    <h2 class="font-script text-4xl text-sage-800">Lana & Elma</h2>
+                    
+                    <p class="text-xs sm:text-sm text-stone-600 leading-relaxed px-2">
+                        Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i sekalian untuk menghadiri acara pernikahan kami di Samarinda.
+                    </p>
+
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-stone-100">
+                        <span class="text-[11px] uppercase tracking-widest text-sage-600 font-semibold block mb-1">Hari & Tanggal Bahagia</span>
+                        <p class="text-stone-800 font-bold text-sm">Minggu, 10 Januari 2027</p>
+                    </div>
+
+                    <!-- Countdown Timer -->
+                    <div class="grid grid-cols-4 gap-2 pt-2">
+                        <div class="bg-sage-700 text-white p-2.5 rounded-xl shadow-sm">
+                            <span id="days" class="text-lg font-bold block">00</span>
+                            <span class="text-[9px] uppercase tracking-wider text-sage-200">Hari</span>
+                        </div>
+                        <div class="bg-sage-700 text-white p-2.5 rounded-xl shadow-sm">
+                            <span id="hours" class="text-lg font-bold block">00</span>
+                            <span class="text-[9px] uppercase tracking-wider text-sage-200">Jam</span>
+                        </div>
+                        <div class="bg-sage-700 text-white p-2.5 rounded-xl shadow-sm">
+                            <span id="minutes" class="text-lg font-bold block">00</span>
+                            <span class="text-[9px] uppercase tracking-wider text-sage-200">Menit</span>
+                        </div>
+                        <div class="bg-sage-700 text-white p-2.5 rounded-xl shadow-sm">
+                            <span id="seconds" class="text-lg font-bold block">00</span>
+                            <span class="text-[9px] uppercase tracking-wider text-sage-200">Detik</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: QS. AR-RUM: 21 -->
+            <section class="min-h-full w-full flex flex-col items-center justify-center p-6 text-center relative bg-sage-50 py-16">
+                <div class="z-10 space-y-6 max-w-sm bg-white/80 backdrop-blur-md p-6 rounded-3xl shadow-sm border border-sage-200">
+                    <span class="text-3xl text-sage-600 font-serif">❝</span>
+                    
+                    <p class="text-xs sm:text-sm text-sage-800 leading-relaxed font-medium">
+                        "Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepada-Nya, dan Dia menjadikan di antaramu rasa kasih dan sayang..."
+                    </p>
+                    
+                    <div class="border-t border-sage-100 pt-3">
+                        <h4 class="font-bold text-xs text-sage-700 uppercase tracking-widest">QS. Ar-Rum Ayat 21</h4>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: PROFIL MEMPELAI (VERTICAL) -->
+            <section class="min-h-full w-full flex flex-col items-center justify-center p-6 text-center relative bg-[#fdfbf7] py-16">
+                <div class="z-10 space-y-6 w-full max-w-sm">
+                    <div class="text-center">
+                        <span class="text-xs uppercase tracking-[0.2em] text-sage-600 font-semibold">Mempelai Bahagia</span>
+                        <h2 class="font-script text-4xl text-sage-800 mt-1">Pengantin</h2>
+                    </div>
+
+                    <!-- Groom Card -->
+                    <div class="bg-white p-5 rounded-3xl shadow-sm border border-stone-100 flex flex-col items-center group">
+                        <div class="w-28 h-28 rounded-2xl overflow-hidden mb-3 shadow-md border-2 border-sage-100">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400" alt="Lana" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/400x400/879a87/ffffff?text=Lana'">
+                        </div>
+                        <h3 class="font-bold text-lg text-stone-800">Lana</h3>
+                        <p class="text-xs text-sage-700 font-medium mt-0.5">Putra dari</p>
+                        <p class="text-xs text-stone-500 mt-0.5">Bpk. Ngadiman & Ibu Mustika</p>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="flex items-center justify-center gap-3">
+                        <div class="h-px bg-sage-300 w-10"></div>
+                        <span class="font-script text-2xl text-sage-600">&</span>
+                        <div class="h-px bg-sage-300 w-10"></div>
+                    </div>
+
+                    <!-- Bride Card -->
+                    <div class="bg-white p-5 rounded-3xl shadow-sm border border-stone-100 flex flex-col items-center group">
+                        <div class="w-28 h-28 rounded-2xl overflow-hidden mb-3 shadow-md border-2 border-sage-100">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400" alt="Elma" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/400x400/c59b8d/ffffff?text=Elma'">
+                        </div>
+                        <h3 class="font-bold text-lg text-stone-800">Elma</h3>
+                        <p class="text-xs text-sage-700 font-medium mt-0.5">Putri dari</p>
+                        <p class="text-xs text-stone-500 mt-0.5">Seseorang (Keluarga Besar)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5: DETAIL ACARA & MAPS (SAMARINDA) -->
+            <section class="min-h-full w-full flex flex-col items-center justify-center p-6 text-center relative bg-sage-50/50 py-16">
+                <div class="z-10 space-y-6 w-full max-w-sm">
+                    <div class="text-center">
+                        <span class="text-xs uppercase tracking-[0.2em] text-sage-600 font-semibold">Rangkaian Acara</span>
+                        <h2 class="font-script text-4xl text-sage-800 mt-1">Lokasi & Waktu</h2>
+                    </div>
+
+                    <!-- Akad Card -->
+                    <div class="bg-white p-5 rounded-3xl shadow-sm border border-sage-100 text-left space-y-3 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-sage-700 text-white text-[9px] uppercase font-bold px-3 py-1 rounded-bl-xl">Utama</div>
+                        <h3 class="font-bold text-sm text-sage-800 flex items-center gap-2">
+                            <i class="fa-solid fa-ring text-sage-600"></i> Akad Nikah
+                        </h3>
+                        <div class="text-xs text-stone-600 space-y-1">
+                            <p><i class="fa-regular fa-calendar-days text-sage-600 mr-2"></i> Minggu, 10 Januari 2027</p>
+                            <p><i class="fa-regular fa-clock text-sage-600 mr-2"></i> Pukul 08.00 WITA - Selesai</p>
+                            <p class="pt-1"><i class="fa-solid fa-location-dot text-sage-600 mr-2"></i> <strong>Kediaman Mempelai</strong><br><span class="pl-5 text-stone-500 block">Jl. Ahmad Yani No. 45, Samarinda, Kalimantan Timur</span></p>
+                        </div>
+                        <div class="pt-2">
+                            <button onclick="openMapModal('Akad Nikah', 'Jl. Ahmad Yani No. 45, Samarinda', 'https://maps.google.com/?q=Samarinda')" class="w-full py-2 bg-sage-100 text-sage-700 text-xs font-bold rounded-xl hover:bg-sage-700 hover:text-white transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-map-location-dot"></i> Preview & Buka Maps
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Resepsi Card -->
+                    <div class="bg-white p-5 rounded-3xl shadow-sm border border-sage-100 text-left space-y-3">
+                        <h3 class="font-bold text-sm text-stone-800 flex items-center gap-2">
+                            <i class="fa-solid fa-champagne-glasses text-rosegold-500"></i> Resepsi Pernikahan
+                        </h3>
+                        <div class="text-xs text-stone-600 space-y-1">
+                            <p><i class="fa-regular fa-calendar-days text-rosegold-500 mr-2"></i> Minggu, 10 Januari 2027</p>
+                            <p><i class="fa-regular fa-clock text-rosegold-500 mr-2"></i> Pukul 11.00 - 15.00 WITA</p>
+                            <p class="pt-1"><i class="fa-solid fa-location-dot text-rosegold-500 mr-2"></i> <strong>Gedung Serbaguna Samarinda</strong><br><span class="pl-5 text-stone-500 block">Jl. Mulawarman, Samarinda</span></p>
+                        </div>
+                        <div class="pt-2">
+                            <button onclick="openMapModal('Resepsi Pernikahan', 'Gedung Serbaguna Samarinda', 'https://maps.google.com/?q=Gedung+Serbaguna+Samarinda')" class="w-full py-2 bg-rosegold-100 text-rosegold-600 text-xs font-bold rounded-xl hover:bg-rosegold-600 hover:text-white transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-map-location-dot"></i> Preview & Buka Maps
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 6: GALERI FOTO (CAROUSEL) -->
+            <section class="min-h-full w-full flex flex-col items-center justify-center p-6 text-center relative bg-[#fdfbf7] py-16">
+                <div class="z-10 space-y-6 w-full max-w-sm">
+                    <div class="text-center">
+                        <span class="text-xs uppercase tracking-[0.2em] text-sage-600 font-semibold">Momen Indah</span>
+                        <h2 class="font-script text-4xl text-sage-800 mt-1">Galeri Foto</h2>
+                    </div>
+
+                    <div class="relative w-full aspect-[4/5] rounded-3xl overflow-hidden shadow-md bg-stone-100 border border-sage-100 group">
+                        <div id="carouselTrack" class="flex h-full transition-transform duration-500 ease-out">
+                            <div class="w-full h-full flex-shrink-0">
+                                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=600" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/500x600/879a87/ffffff?text=Gallery+1'">
+                            </div>
+                            <div class="w-full h-full flex-shrink-0">
+                                <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=600" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/500x600/c59b8d/ffffff?text=Gallery+2'">
+                            </div>
+                            <div class="w-full h-full flex-shrink-0">
+                                <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=600" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/500x600/6c7f6c/ffffff?text=Gallery+3'">
+                            </div>
+                        </div>
+
+                        <button onclick="prevSlide()" class="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 text-white flex items-center justify-center backdrop-blur-sm hover:bg-black/60 transition">
+                            <i class="fa-solid fa-chevron-left text-xs"></i>
+                        </button>
+                        <button onclick="nextSlide()" class="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 text-white flex items-center justify-center backdrop-blur-sm hover:bg-black/60 transition">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+
+                        <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+                            <span class="dot w-2 h-2 rounded-full bg-white transition-all cursor-pointer" onclick="currentSlide(0)"></span>
+                            <span class="dot w-2 h-2 rounded-full bg-white/50 transition-all cursor-pointer" onclick="currentSlide(1)"></span>
+                            <span class="dot w-2 h-2 rounded-full bg-white/50 transition-all cursor-pointer" onclick="currentSlide(2)"></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 7: UCAPAN & KADO -->
+            <section class="min-h-full w-full flex flex-col items-center justify-center p-6 text-center relative bg-sage-50/50 py-16">
+                <div class="z-10 space-y-6 w-full max-w-sm">
+                    <div class="text-center">
+                        <span class="text-xs uppercase tracking-[0.2em] text-sage-600 font-semibold">Doa & Kasih Sayang</span>
+                        <h2 class="font-script text-4xl text-sage-800 mt-1">Ucapan & Kado</h2>
+                    </div>
+
+                    <!-- Gift Box -->
+                    <div class="bg-white p-5 rounded-3xl shadow-sm border border-sage-100 text-left space-y-3">
+                        <h3 class="font-bold text-xs text-stone-800 flex items-center gap-2">
+                            <i class="fa-solid fa-gift text-sage-600"></i> Kirim Hadiah / Kado
+                        </h3>
+                        <p class="text-[11px] text-stone-500">Kirim tanda kasih atau datang langsung ke kediaman:</p>
+                        
+                        <div class="bg-sage-50 p-3 rounded-2xl border border-sage-100 flex items-center justify-between">
+                            <div>
+                                <span class="text-[9px] text-sage-600 uppercase font-bold block">BCA a.n Lana Arkananta</span>
+                                <span id="bankAcc" class="text-xs font-mono font-bold text-stone-800">1234567890</span>
+                            </div>
+                            <button onclick="copyAccount()" class="px-2.5 py-1 bg-sage-700 text-white text-[11px] font-semibold rounded-lg hover:bg-sage-800 transition">
+                                Salin
+                            </button>
+                        </div>
+                        <div class="bg-stone-50 p-3 rounded-2xl border border-stone-200 text-[11px] text-stone-600">
+                            <strong>Alamat Rumah:</strong> Jl. Ahmad Yani No. 45, Samarinda.
+                        </div>
+                    </div>
+
+                    <!-- Wishes / Buku Tamu Realtime -->
+                    <div class="bg-white p-5 rounded-3xl shadow-sm border border-sage-100 text-left space-y-3">
+                        <h3 class="font-bold text-xs text-stone-800 flex items-center gap-2">
+                            <i class="fa-solid fa-comments text-sage-600"></i> Buku Tamu & Doa
+                        </h3>
+
+                        <form id="wishesForm" onsubmit="submitWish(event)" class="space-y-2.5">
+                            <input type="text" id="wishName" placeholder="Nama Anda" required class="w-full px-3 py-2 text-xs rounded-xl border border-stone-200 focus:outline-none focus:border-sage-600">
+                            <select id="wishAttendance" class="w-full px-3 py-2 text-xs rounded-xl border border-stone-200 focus:outline-none focus:border-sage-600 bg-white">
+                                <option value="Hadir">Hadir</option>
+                                <option value="Berhalangan Hadir">Berhalangan Hadir</option>
+                            </select>
+                            <textarea id="wishMessage" placeholder="Tulis ucapan dan doa restu..." rows="2" required class="w-full px-3 py-2 text-xs rounded-xl border border-stone-200 focus:outline-none focus:border-sage-600 resize-none"></textarea>
+                            <button type="submit" class="w-full py-2 bg-sage-700 text-white text-xs font-bold rounded-xl hover:bg-sage-800 transition shadow-sm">
+                                Kirim Ucapan
+                            </button>
+                        </form>
+
+                        <div id="wishesList" class="space-y-2.5 max-h-48 overflow-y-auto pr-1 pt-2 border-t border-stone-100">
+                            <!-- Dynamic wishes items -->
+                        </div>
+                    </div>
+
+                    <div class="text-center pt-6 pb-4 text-[10px] text-stone-400 space-y-1">
+                        <p class="font-script text-2xl text-sage-700">Terima Kasih</p>
+                        <p>Lana & Elma Wedding</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- MAPS MODAL POPUP -->
+    <div id="mapModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl space-y-4 text-center transform scale-95 transition-transform duration-300" id="mapModalContent">
+            <div class="w-12 h-12 bg-sage-100 text-sage-700 rounded-full flex items-center justify-center mx-auto text-xl">
+                <i class="fa-solid fa-map-location-dot"></i>
+            </div>
+            <div>
+                <h3 id="modalTitle" class="font-bold text-base text-stone-800">Lokasi Acara</h3>
+                <p id="modalAddress" class="text-xs text-stone-500 mt-1">Alamat lengkap lokasi di Samarinda.</p>
+            </div>
+            <div class="grid grid-cols-2 gap-2 pt-2">
+                <button onclick="closeMapModal()" class="py-2.5 bg-stone-100 text-stone-600 text-xs font-bold rounded-xl hover:bg-stone-200 transition">
+                    Tutup
+                </button>
+                <a id="modalLink" href="#" target="_blank" class="py-2.5 bg-sage-700 text-white text-xs font-bold rounded-xl hover:bg-sage-800 transition flex items-center justify-center gap-1">
+                    Buka Maps <i class="fa-solid fa-external-link text-[10px]"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-stone-900/90 text-white text-xs px-4 py-2.5 rounded-full shadow-lg z-50 pointer-events-none transition-all duration-300 opacity-0 translate-y-4">
+        Notifikasi pesan
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // 1. URL Guest Name Parameter Support
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const toParam = urlParams.get('to');
+            if (toParam) {
+                const decodedName = decodeURIComponent(toParam.replace(/\+/g, ' '));
+                document.getElementById('guestNameCover').innerText = decodedName;
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+            renderWishes();
+        });
+
+        // 2. Open Envelope Cover (Animasi Membuka Surat & Musik)
+        function openEnvelope() {
+            const cover = document.getElementById('envelopeCover');
+            cover.style.transform = 'translateY(-100%)';
+            cover.style.opacity = '0';
+            setTimeout(() => {
+                cover.classList.add('hidden');
+            }, 700);
+
+            // Play Music
+            const music = document.getElementById('bgMusic');
+            music.play().catch(e => console.log("Audio autoplay restricted:", e));
+            document.getElementById('musicToggle').classList.remove('hidden');
+        }
+
+        // Music Toggle Controller
+        let isPlaying = true;
+        function toggleMusic() {
+            const music = document.getElementById('bgMusic');
+            const icon = document.getElementById('musicIcon');
+            if (isPlaying) {
+                music.pause();
+                icon.classList.remove('animate-spin', 'fa-compact-disc');
+                icon.classList.add('fa-play');
+            } else {
+                music.play();
+                icon.classList.remove('fa-play');
+                icon.classList.add('animate-spin', 'fa-compact-disc');
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // 3. Countdown Timer Logic (10 Januari 2027)
+        const weddingDate = new Date('Jan 10, 2027 08:00:00').getTime();
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            if (distance < 0) {
+                document.getElementById('days').innerText = '00';
+                document.getElementById('hours').innerText = '00';
+                document.getElementById('minutes').innerText = '00';
+                document.getElementById('seconds').innerText = '00';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = String(days).padStart(2, '0');
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+        }
+
+        // 4. Photo Gallery Carousel Slider
+        let currentSlideIndex = 0;
+        const totalSlides = 3;
+
+        function updateCarousel() {
+            const track = document.getElementById('carouselTrack');
+            track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+            
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                if (index === currentSlideIndex) {
+                    dot.classList.remove('bg-white/50');
+                    dot.classList.add('bg-white');
+                } else {
+                    dot.classList.remove('bg-white');
+                    dot.classList.add('bg-white/50');
+                }
+            });
+        }
+
+        function nextSlide() {
+            currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentSlideIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        }
+
+        function currentSlide(index) {
+            currentSlideIndex = index;
+            updateCarousel();
+        }
+
+        setInterval(nextSlide, 4000);
+
+        // 5. Maps Modal Preview Handler
+        function openMapModal(title, address, url) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalAddress').innerText = address;
+            document.getElementById('modalLink').href = url;
+
+            const modal = document.getElementById('mapModal');
+            const content = document.getElementById('mapModalContent');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeMapModal() {
+            const modal = document.getElementById('mapModal');
+            const content = document.getElementById('mapModalContent');
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // 6. Copy Bank Account Number
+        function copyAccount() {
+            const accText = document.getElementById('bankAcc').innerText;
+            const dummy = document.createElement('textarea');
+            document.body.appendChild(dummy);
+            dummy.value = accText;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+            showToast('Nomor rekening berhasil disalin!');
+        }
+
+        // 7. Realtime Wishes Simulation (LocalStorage State)
+        let wishes = JSON.parse(localStorage.getItem('wedding_wishes_lana_elma')) || [
+            { name: 'Ahmad Fauzi', attendance: 'Hadir', message: 'Barakallah lakuma! Semoga menjadi keluarga sakinah mawaddah warahmah hingga jannah.', time: 'Baru saja' },
+            { name: 'Siti Rahma', attendance: 'Hadir', message: 'Selamat ya Lana & Elma! Lancar sampai hari H di Samarinda.', time: '1 jam lalu' }
+        ];
+
+        function renderWishes() {
+            const listContainer = document.getElementById('wishesList');
+            listContainer.innerHTML = '';
+            wishes.forEach(wish => {
+                const badgeColor = wish.attendance === 'Hadir' ? 'bg-sage-100 text-sage-700' : 'bg-rosegold-100 text-rosegold-600';
+                const item = document.createElement('div');
+                item.className = 'bg-stone-50 p-3 rounded-2xl border border-stone-200 text-xs space-y-1';
+                item.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <strong class="text-stone-800">${escapeHtml(wish.name)}</strong>
+                        <span class="text-[9px] px-2 py-0.5 rounded-full font-semibold ${badgeColor}">${escapeHtml(wish.attendance)}</span>
+                    </div>
+                    <p class="text-stone-600 leading-relaxed">${escapeHtml(wish.message)}</p>
+                    <span class="text-[9px] text-stone-400 block text-right">${escapeHtml(wish.time)}</span>
+                `;
+                listContainer.appendChild(item);
+            });
+        }
+
+        function submitWish(e) {
+            e.preventDefault();
+            const name = document.getElementById('wishName').value;
+            const attendance = document.getElementById('wishAttendance').value;
+            const message = document.getElementById('wishMessage').value;
+
+            const newWish = {
+                name,
+                attendance,
+                message,
+                time: 'Baru saja'
+            };
+
+            wishes.unshift(newWish);
+            localStorage.setItem('wedding_wishes_lana_elma', JSON.stringify(wishes));
+            renderWishes();
+
+            document.getElementById('wishesForm').reset();
+            showToast('Ucapan & doa berhasil dikirim!');
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        // Toast Notification Helper
+        let toastTimer;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.remove('opacity-0', 'translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'translate-y-4');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
